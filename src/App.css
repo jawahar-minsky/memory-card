@@ -1,4 +1,4 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +39,53 @@
 
 .read-the-docs {
   color: #888;
+} */
+body {
+  background-color: darkmagenta;
+}
+h1 {
+  text-align: center;
+  color: white;
+  user-select: none;
+}
+#description {
+  text-align: center;
+  color: white;
+  user-select: none;
+}
+#scores {
+  display: flex;
+  padding: 0 1.5rem;
+  justify-content: space-between;
+  color: aliceblue;
+}
+/* #score {
+  margin-right: auto;
+}
+#bestScore {
+  margin-right: auto;
+} */
+#layout {
+  display: flex;
+  flex-wrap: wrap;
+}
+.cards {
+  padding: 0.8rem;
+  background-color: rgb(17, 5, 62);
+  margin: 1rem;
+  border-radius: 0.5rem;
+  cursor:pointer;
+}
+.cards:hover {
+  box-shadow: 0 0 20px 5px rgb(193, 193, 16);
+}
+img {
+  background-color: white;
+  width: 200px;
+}
+p:not(#description) {
+  text-align: center;
+  color: white;
+  user-select: none;
+  font-size: 1.4rem;
 }
