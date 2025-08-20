@@ -47,15 +47,18 @@ h1 {
   text-align: center;
   color: white;
   user-select: none;
+  font-size: 3rem;
+  font-family:cursive;
 }
 #description {
   text-align: center;
   color: white;
   user-select: none;
+  font-size: 1.5rem;
 }
 #scores {
   display: flex;
-  padding: 0 1.5rem;
+  padding: 0 9rem;
   justify-content: space-between;
   color: aliceblue;
 }
@@ -68,24 +71,30 @@ h1 {
 #layout {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  /* justify-content: space-between; */
+  /* justify-content: center; */
 }
-.cards {
+.card {
   padding: 0.8rem;
   background-color: rgb(17, 5, 62);
   margin: 1rem;
   border-radius: 0.5rem;
   cursor:pointer;
 }
-.cards:hover {
-  box-shadow: 0 0 20px 5px rgb(193, 193, 16);
+.card:hover {
+  box-shadow: 0 0 20px 5px violet; /*rgb(193, 193, 16)*/
 }
 img {
   background-color: white;
-  width: 200px;
+  width: 16rem;
+  border-radius: 2rem 2rem 0.5rem 0.5rem;
 }
 p:not(#description) {
   text-align: center;
   color: white;
   user-select: none;
-  font-size: 1.4rem;
+  /* font-size: 1.4rem;
+  font-weight: bold; */
+  font: oblique bold 1.4rem Trebuchet MS, Lucida Sans Unicode, Lucida Grande, Lucida Sans, Arial, sans-serif;
 }

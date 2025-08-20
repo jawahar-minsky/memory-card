@@ -4,15 +4,14 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  let url = []
-  const [score, setScore]=useState(0)
+  const [url,setUrl] = useState()
   const [clicked, setClicked] = useState([])
   const [bestScore,setBestScore] = useState(0)
-  const names = ["ditto","bulbasaur","ivysaur"]
+  const [names,setNames] = useState(["ditto","bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard","squirtle","wartortle","blastoise","caterpie","metapod","butterfree","weedle","kakuna","beedrill","pidgey","pidgeotto","rattata","raticate"])
   async function fetchData(name) {
     try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-      const data = await response.json(); 
+      const data = await response.json();
       return data.sprites.front_default
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -23,68 +22,74 @@ function App() {
       const urls = await Promise.all(
         names.map((name)=> fetchData(name))
       )
-      for (let i=0; i<urls.length; i++) {
-        if(!document.querySelector(`#${names[i]}`)) {
-          const divElement = document.createElement('div')
-          divElement.className = 'cards'
-          divElement.id = names[i]
-          const image = document.createElement('img')
-          image.src = urls[i]
-          const label = document.createElement('p')
-          label.textContent = names[i]
-          divElement.append(image,label)
-          document.querySelector('#layout').appendChild(divElement)
-        }
-      }
+      return urls
     } catch (error) {
-      console.log('failed to get url')
+      console.error('Error fetching URL', error);
     }
   }
-  const handleClick=(e) => {
-    console.log(e.target.id)
+  useEffect(()=>{
+    const urls = getURL().then(result => {
+      setUrl([...result])
+    })
+  },[names])
+  const shuffleArray = (array) => {
+    let currentIndex = array.length;
+    let randomIndex;
+    while (currentIndex!==0) {
+      randomIndex = Math.floor(Math.random()*currentIndex)
+      currentIndex--
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+    }
+    return array
   }
-  const game = async() => {
-    await getURL();
-    const elements = document.querySelectorAll('.cards')
-    elements.forEach(element => {
-      element.addEventListener('click',(e)=> {
-        if (e.target.id) {
-          if (!clicked.includes(e.target.id)) {
-            setClicked([...clicked, e.target.id])
-          }
+  const handleClick=(e) => {
+    let value = ''
+    if (e.target.id) {
+      value = e.target.id
+    }
+    else {
+      value = e.target.parentElement.id
+    }
+    if(value) {
+      if(!clicked.includes(value)) {
+        setClicked([...clicked, value])
+        if (clicked.length===names.length-1) {
+          setBestScore(names.length)
+          setClicked([])
+          alert('Congrats!, You have achieved maximum score')
+        }
+      }
+      else if (clicked.includes(value)) {
+        setClicked([])
+        if (clicked.length>bestScore) {
+          setBestScore(clicked.length)
+          alert(`You have achieved new best score ${clicked.length}!`)
         }
         else {
-          if (!clicked.includes(e.target.parentElement.id)) {
-            setClicked([...clicked, e.target.parentElement.id])
-          }
-          let value = e.target.parentElement.id
+          alert(`Your score is ${clicked.length}`)
         }
-        if (!clicked.includes(e.target.id) || !clicked.includes(e.target.parentElement.id)) {
-          setClicked([...clicked, value])
-        }
-      })
+      }
+    }
+    setNames(shuffleArray(names))
+    getURL().then(result => {
+      setUrl([...result])
     })
-    // console.log(clicked)
-    // document.querySelectorAll('.cards').addEventListener('click',(e)=>console.log(e.target.id))
   }
-  
-  useEffect(()=>{game()})
-  console.log(clicked)
-  // const elements = document.querySelectorAll('.cards')
-  // elements.forEach(element => {
-  //   element.addEventListener('click',(e)=> {
-  //     console.log(e.target.id)
-  //   })
-  // })
   return (
     <>
     <h1>Memory Card Game</h1>
     <p id='description'>Don't click on a card more than once</p>
     <div id='scores'>
-      <h2 id='score'>Score: {score}</h2>
+      <h2 id='score'>Score: {clicked.length}</h2>
       <h2 id='bestScore'>Best Score: {bestScore}</h2>
     </div>
     <div id='layout'>
+      {names.map((name,index) => (
+        <div key={name} id={name} className='card' onClick={handleClick}>
+          {url?<img src={url[index]} alt={name}/>:<p>Loading...</p>}
+          <p>{name.charAt(0).toUpperCase()+name.slice(1)}</p>
+        </div>
+      ))}
     </div>
     </>
   )
