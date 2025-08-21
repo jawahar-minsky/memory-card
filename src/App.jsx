@@ -6,6 +6,8 @@ function App() {
   const [clicked, setClicked] = useState([])
   const [bestScore,setBestScore] = useState(0)
   const [names,setNames] = useState(["ditto","bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard","squirtle","wartortle","blastoise","caterpie","metapod","butterfree","weedle","kakuna","beedrill","pidgey","pidgeotto","rattata","raticate"])
+  let a = names
+  let b = url
   async function fetchData(name) {
     try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
@@ -26,19 +28,20 @@ function App() {
     }
   }
   useEffect(()=>{
-    const urls = getURL().then(result => {
+    getURL().then(result => {
       setUrl([...result])
     })
-  },[names])
-  const shuffleArray = (array) => {
-    let currentIndex = array.length;
+  },[])
+  const shuffleArray = (array1,array2) => {
+    let currentIndex = array1.length;
     let randomIndex;
     while (currentIndex!==0) {
-      randomIndex = Math.floor(Math.random()*currentIndex)
-      currentIndex--
-      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+      randomIndex = Math.floor(Math.random()*currentIndex);
+      currentIndex--;
+      [array1[currentIndex], array1[randomIndex]] = [array1[randomIndex], array1[currentIndex]];
+      [array2[currentIndex], array2[randomIndex]] = [array2[randomIndex], array2[currentIndex]];
     }
-    return array
+    return [array1, array2]
   }
   const handleClick=(e) => {
     let value = ''
@@ -68,10 +71,9 @@ function App() {
         }
       }
     }
-    setNames(shuffleArray(names))
-    getURL().then(result => {
-      setUrl([...result])
-    })
+    [a, b] = shuffleArray(names,url)
+    setNames(a)
+    setUrl(b)
   }
   return (
     <>
