@@ -62,8 +62,9 @@ function App() {
       }
       else if (clicked.includes(value)) {
         setClicked([])
-        if (clicked.length>bestScore) {
+        if (clicked.length>localStorage.getItem('bestScore')) {
           setBestScore(clicked.length)
+          localStorage.setItem('bestScore', clicked.length)
           alert(`You have achieved new best score ${clicked.length}!`)
         }
         else {
@@ -81,7 +82,7 @@ function App() {
     <p id='description'>Don't click on a card more than once</p>
     <div id='scores'>
       <h2 id='score'>Score: {clicked.length}</h2>
-      <h2 id='bestScore'>Best Score: {bestScore}</h2>
+      <h2 id='bestScore'>Best Score: {localStorage.getItem('bestScore')?localStorage.getItem('bestScore'):bestScore}</h2>
     </div>
     <div id='layout'>
       {names.map((name,index) => (
